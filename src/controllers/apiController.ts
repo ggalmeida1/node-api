@@ -76,3 +76,11 @@ export const deletePhrase = async (req: Request, res: Response) => {
 
         res.json({ message: 'Successfully deleted'})
 }
+
+export const uploadFile = async (req: Request, res: Response) => {
+    const files = req.files as { [ fieldname: string]: Express.Multer.File[] }
+
+    console.log("AVATAR", files.avatar)
+
+    res.json({})
+}
