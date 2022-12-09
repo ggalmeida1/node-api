@@ -1,4 +1,6 @@
 import { Request, Response } from 'express'
+
+import sharp from 'sharp'
 import { resolve } from 'path'
 import { Phrase } from '../models/Phrase'
 
@@ -78,9 +80,15 @@ export const deletePhrase = async (req: Request, res: Response) => {
 }
 
 export const uploadFile = async (req: Request, res: Response) => {
-    const files = req.files as { [ fieldname: string]: Express.Multer.File[] }
+    if (req.file) {
+        await sharp(req.file.path)
+            .resize(200, 200 ) //width, height
+            .toFormat('jpeg')
+            .toFile(`./public/media/${req.file.filename}.jpg`)
 
-    console.log("AVATAR", files.avatar)
-
-    res.json({})
+        res.json({ message: 'Successfully uploaded'})
+    } else {
+        res.status(400)
+        res.json({ error: 'Invalid file' })
+    }
 }
