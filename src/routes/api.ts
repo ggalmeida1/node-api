@@ -23,7 +23,8 @@ const updload = multer({
         const allowedTypes: string[] = ['image/jpg', 'image/png', 'image/jpeg']
 
         cb(null, allowedTypes.includes( file.mimetype ))
-    }
+    },
+    limits: { fieldSize: 1000000 } //size of the file is always in bytes
 })
 
 const router = Router()
