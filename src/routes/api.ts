@@ -3,8 +3,27 @@ import { Router } from 'express'
 import * as ApiController from '../controllers/apiController'
 import multer from 'multer'
 
+// DiskStorage settings
+// const storageConfig = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, './tmp')
+//     },
+//     filename: (req, file, cb) => {
+//         let randomName = Math.floor(Math.random() * 9999)
+//         cb(null, `${randomName+Date.now()}.jpg`)
+//     }
+// })
+
+//Memory Storage settings
+// const storageConfig = multer.memoryStorage()
+
 const updload = multer({
-    dest: './tmp'
+    dest: './tmp',
+    fileFilter: (req, file, cb) => {
+        const allowedTypes: string[] = ['image/jpg', 'image/png', 'image/jpeg']
+
+        cb(null, allowedTypes.includes( file.mimetype ))
+    }
 })
 
 const router = Router()
